@@ -4,6 +4,12 @@
 
 This project applies neural style transfer (NST) to transform an input image by adopting the artistic style of another image. NST leverages convolutional neural networks (CNNs) to separate and recombine content and style, producing visually striking results.
 
+## Streamlit App
+
+`streamlit run streamlit.py`
+
+## Result
+
 <tr>
 <table align="center">
   <tr>
@@ -14,7 +20,3 @@ This project applies neural style transfer (NST) to transform an input image by 
     <td colspan="4" align="center"><img src="Image/generated_image.jpg" width="75%"></td>
   </tr>
 </table>
-
-## Streamlit App
-
-`streamlit run streamlit.py`

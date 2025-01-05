@@ -4,12 +4,12 @@ import torch.nn as nn
 import torch.optim as optim
 import cv2
 import json
+
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 import torchvision.utils as vutils
 import torchvision.transforms as transforms
 from vgg19 import *
-
 
 mean = [0.485, 0.456, 0.406]
 std = [0.229, 0.224, 0.225]
@@ -18,7 +18,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 trans = transforms.Compose([
     transforms.ToTensor(),
-    transforms.Resize((512, 512)),
+    transforms.Resize((256, 256)),
     transforms.Normalize(mean=mean, std=std)
 ])
 
@@ -27,7 +27,7 @@ def load_json_config(file_path):
         config = json.load(file)
     return config
 
-config = load_json_config('../Neural_Style_Transfer/config.json')
+config = load_json_config('../NeuralStyleTransfer/config.json')
 
 def load_image(image_link):
     image = cv2.imread(image_link)
@@ -53,8 +53,9 @@ def style_loss(style_image, stylied_image):
 def convert_image_origin_size(image, height, width):
     image = image.squeeze().permute(1, 2, 0).detach().cpu().numpy()
     image = image * std + mean
-    image = (image * 255.0).clip(0, 255).astype(np.uint8)
+
     image = cv2.resize(image, (width, height))
+    
     return image
 
 def visualize_feature_map_layer(model, image):
@@ -72,11 +73,10 @@ def visualize_feature_map_layer(model, image):
 class NeuralStyleTransfer(nn.Module):
     def __init__(self):
         super(NeuralStyleTransfer, self).__init__()
-        self.model = VGG19()
+        self.model = VGG19().to(device).eval()
         
     def forward(self, content_image, style_image, step_sizes):
-        self.model.to(device).eval()
-        original_height, original_width = content_image.shape[:2] 
+        original_height, original_width = content_image.shape[:2]
 
         content_image = trans(content_image).unsqueeze(0)
         style_image = trans(style_image).unsqueeze(0)
@@ -86,14 +86,14 @@ class NeuralStyleTransfer(nn.Module):
             
         generated_image = content_image.clone().requires_grad_(True)
         optimizer = torch.optim.Adam([generated_image], lr=config['parameters']['learning_rate'])
+        
+        content_feature_map = self.model(content_image, mode='content')
+        style_feature_maps = self.model(style_image, mode='style')
 
         for step_size in tqdm(range(step_sizes)):
-            
+        
             generated_style_feature_maps = self.model(generated_image, mode='style')
             generated_content_feature_map = self.model(generated_image, mode='content')
-            
-            content_feature_map = self.model(content_image, mode='content')
-            style_feature_maps = self.model(style_image, mode='style')
             
             contentloss = 0
             styleloss = 0
@@ -106,22 +106,10 @@ class NeuralStyleTransfer(nn.Module):
             total_loss = config['parameters']['alpha'] * contentloss + config['parameters']['beta'] * styleloss
             optimizer.zero_grad()
             total_loss.backward()
-                
+            
             optimizer.step()
             
-        generated_image = transforms.Resize((original_height, original_width))(generated_image)
-        vutils.save_image(generated_image, f'../Neural_Style_Transfer/generated_image_{step_size+1}.jpg', normalize=True)
         styled_image = convert_image_origin_size(generated_image, original_height, original_width)
-        
+
+        vutils.save_image(generated_image, 'results/generated_image.jpg', normalize=True)
         return styled_image
-    
-# content_image = load_image('../Neural_Style_Transfer/content_image.jpg')
-# style_image = load_image('../Neural_Style_Transfer/style_image.jpg')
-
-# neural_style_transfer = NeuralStyleTransfer()
-# styled_image = neural_style_transfer(content_image, style_image, 2)
-# print(styled_image.shape)
-# plt.imshow(styled_image)
-# plt.axis('off')
-# plt.show()
-

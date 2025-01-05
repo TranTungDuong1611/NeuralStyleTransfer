@@ -3,7 +3,7 @@
   {
     "alpha": 1e-5,
     "beta": 1,
-    "learning_rate": 1,
+    "learning_rate": 0.2,
     "wl": 0.2
   }
 }

@@ -11,7 +11,7 @@ This project applies neural style transfer (NST) to transform an input image by 
   <tr>
     <td align="center"><img src="Image/content_image.jpg" width="75%"></td>
     <td align="center" style="font-size: 30px; font-weight: bold;"> + </td>
-    <td align="center"><img src="/Image/style_image.jpg" width="120%"></td>
+    <td align="center"><img src="Image/style_image.jpg" width="120%"></td>
     <td align="center" style="font-size: 30px; font-weight: bold;"> = </td>
     <td colspan="4" align="center"><img src="Image/generated_image.jpg" width="75%"></td>
   </tr>

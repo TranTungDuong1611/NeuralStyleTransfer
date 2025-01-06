@@ -50,11 +50,12 @@ def style_loss(style_image, stylied_image):
 
     return (1/(4 * Nl**2 * Ml**2)) * torch.sum((style_gram_matrix - stylied_gram_matrix) ** 2)
 
-def convert_image_origin_size(image, height, width):
+def convert_image_origin_size(image, height, width, normalize=True):
     image = image.squeeze().permute(1, 2, 0).detach().cpu().numpy()
     image = image * std + mean
 
     image = cv2.resize(image, (width, height))
+    image = np.clip(image, 0, 1)
     
     return image
 

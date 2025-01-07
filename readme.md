@@ -38,7 +38,7 @@ Deploy model on streamlit
 
 The interface of the streamlit app looks like this, you can upload an image for `content` and another image for `style` and choose the `step size` before start transfer:
 
-![Streamlit](Image\streamlit.png)
+![Streamlit](Image/streamlit.png)
 
 ## Huggingface Space
 
@@ -48,4 +48,4 @@ Deploy model on huggingface, you can visit via link:
 
 The interface in the huggingface look like this:
 
-![Huggingface](Image\huggingface.png)
+![Huggingface](Image/huggingface.png)

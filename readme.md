@@ -44,7 +44,7 @@ The interface of the streamlit app looks like this, you can upload an image for 
 
 Deploy model on huggingface, you can visit via link:
 
-`https://huggingface.co/spaces/TungDuong/image_style_transfer`
+https://huggingface.co/spaces/TungDuong/image_style_transfer
 
 The interface in the huggingface look like this:
 

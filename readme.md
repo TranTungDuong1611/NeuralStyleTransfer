@@ -33,8 +33,9 @@ The generated image is saved in the folder `results`
 ## Streamlit App
 
 Deploy model on streamlit
-
-`streamlit run streamlit.py`
+  ```bash
+  streamlit run streamlit.py
+  ```
 
 The interface of the streamlit app looks like this, you can upload an image for `content` and another image for `style` and choose the `step size` before start transfer:
 
@@ -42,9 +43,7 @@ The interface of the streamlit app looks like this, you can upload an image for 
 
 ## Huggingface Space
 
-Deploy model on huggingface, you can visit via link:
-
-https://huggingface.co/spaces/TungDuong/image_style_transfer
+Deploy model on huggingface, you can visit via link: [Neural Style Transfer](https://huggingface.co/spaces/TungDuong/image_style_transfer)
 
 The interface in the huggingface look like this:
 
